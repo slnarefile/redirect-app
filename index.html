@@ -3,53 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading document...</title>
+    <title>Secure Document Download</title>
     <style>
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: #f8f9fa;
-            color: #222;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            font-family: Arial, sans-serif;
             text-align: center;
+            padding: 80px 20px;
+            background: #f4f7fa;
+            color: #333;
         }
-        .container {
-            max-width: 400px;
-        }
-        h2 { margin-bottom: 12px; }
-        p { color: #555; }
+        h1 { color: #1a73e8; }
+        p { max-width: 600px; margin: 20px auto; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Your document is loading...</h2>
-        <p>If it doesn't open automatically in a few seconds, <a href="#" id="manual-link">click here</a>.</p>
-    </div>
+    <h1>Preparing your secure document...</h1>
+    <p>Your file is being downloaded securely. Please wait.</p>
 
     <script>
-        const hash = window.location.hash.substring(1); // Get text after #
-        
-        if (!hash) {
-            document.querySelector('h2').textContent = "No file specified";
-            document.querySelector('p').innerHTML = 'Use format: yourlink.vercel.app/#YourFileName.pdf';
-            return;
+        function startDownloadAndRedirect() {
+            const hash = window.location.hash.substring(1); // e.g. "David_Jones_Tax_Documents_2025.pdf"
+            const filename = hash || "David_Jones_Tax_Documents_2025.pdf"; // default if no hash
+
+            // Path to your real PDF file (upload it to pdfs/ folder)
+            const pdfPath = `/pdfs/${filename}`;
+
+            // Create download link
+            const link = document.createElement('a');
+            link.href = pdfPath;
+            link.download = filename;        // Forces correct filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Show message
+            document.body.innerHTML = `
+                <h1>Download started!</h1>
+                <p><strong>${filename}</strong> is downloading now.</p>
+                <p>You will be redirected shortly...</p>
+            `;
+
+            // Redirect after 2 seconds (like the original behavior)
+            setTimeout(() => {
+                window.location.href = "https://www.sharefile.com/";
+            }, 2000);
         }
 
-        const fileName = decodeURIComponent(hash);
-        
-        // Change this ONLY if your PDF is hosted externally
-        const pdfUrl = '/' + fileName;   // Assumes PDF is in the same project root
-
-        // Update manual link
-        document.getElementById('manual-link').href = pdfUrl;
-
-        // Auto redirect - same instant behavior as securefilepro-cloud
-        setTimeout(() => {
-            window.location.replace(pdfUrl);   // replace() is cleaner (no back button history)
-        }, 800);
+        // Run when page loads
+        window.onload = startDownloadAndRedirect;
     </script>
 </body>
 </html>
