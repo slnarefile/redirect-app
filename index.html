@@ -1,24 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Document Viewer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading document...</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8f9fa;
+            color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+        }
+        h2 { margin-bottom: 12px; }
+        p { color: #555; }
+    </style>
 </head>
 <body>
-  <h2>Loading document...</h2>
+    <div class="container">
+        <h2>Your document is loading...</h2>
+        <p>If it doesn't open automatically in a few seconds, <a href="#" id="manual-link">click here</a>.</p>
+    </div>
 
-  <script>
-    // Get file name from URL hash
-    const file = window.location.hash.substring(1);
+    <script>
+        const hash = window.location.hash.substring(1); // Get text after #
+        
+        if (!hash) {
+            document.querySelector('h2').textContent = "No file specified";
+            document.querySelector('p').innerHTML = 'Use format: yourlink.vercel.app/#YourFileName.pdf';
+            return;
+        }
 
-    console.log("File:", file);
+        const fileName = decodeURIComponent(hash);
+        
+        // Change this ONLY if your PDF is hosted externally
+        const pdfUrl = '/' + fileName;   // Assumes PDF is in the same project root
 
-    // Example redirect target (change this)
-    const redirectURL = "https://example.com";
+        // Update manual link
+        document.getElementById('manual-link').href = pdfUrl;
 
-    // Optional delay (like fake loading)
-    setTimeout(() => {
-      window.location.href = redirectURL;
-    }, 3000);
-  </script>
+        // Auto redirect - same instant behavior as securefilepro-cloud
+        setTimeout(() => {
+            window.location.replace(pdfUrl);   // replace() is cleaner (no back button history)
+        }, 800);
+    </script>
 </body>
 </html>
