@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Document Viewer</title>
+</head>
+<body>
+  <h2>Loading document...</h2>
+
+  <script>
+    // Get file name from URL hash
+    const file = window.location.hash.substring(1);
+
+    console.log("File:", file);
+
+    // Example redirect target (change this)
+    const redirectURL = "https://example.com";
+
+    // Optional delay (like fake loading)
+    setTimeout(() => {
+      window.location.href = redirectURL;
+    }, 3000);
+  </script>
+</body>
+</html>
