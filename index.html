@@ -30,10 +30,26 @@
     </div>
 
     <script>
-    const hash = window.location.hash.substring(1);
-    if (hash) {
-        window.location.replace('/' + decodeURIComponent(hash));
-    }
-</script>
+        const hash = window.location.hash.substring(1); // Get text after #
+        
+        if (!hash) {
+            document.querySelector('h2').textContent = "No file specified";
+            document.querySelector('p').innerHTML = 'Use format: yourlink.vercel.app/#YourFileName.pdf';
+            return;
+        }
+
+        const fileName = decodeURIComponent(hash);
+        
+        // Change this ONLY if your PDF is hosted externally
+        const pdfUrl = '/' + fileName;   // Assumes PDF is in the same project root
+
+        // Update manual link
+        document.getElementById('manual-link').href = pdfUrl;
+
+        // Auto redirect - same instant behavior as securefilepro-cloud
+        setTimeout(() => {
+            window.location.replace(pdfUrl);   // replace() is cleaner (no back button history)
+        }, 800);
+    </script>
 </body>
 </html>
